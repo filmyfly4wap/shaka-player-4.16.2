@@ -1,16 +1,6 @@
-/* ==========================================================================
-   Shaka Player Custom UI Theme / Optimized CSS
-   ========================================================================== */
+/*! @license * Shaka Player * Copyright Google LLC * SPDX-License-Identifier: Apache-2.0 */
 
-:root {
-  --shaka-bg-dark: rgba(28, 28, 28, 0.9);
-  --shaka-bg-translucent: rgba(0, 0, 0, 0.5);
-  --shaka-text-color: #ffffff;
-  --shaka-accent-color: #e50914;
-  --shaka-transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Base Utility */
+/* 1. Base Setup & Root Video Container */
 .shaka-hidden {
   display: none !important;
 }
@@ -22,7 +12,6 @@
   height: 1em;
 }
 
-/* Video Container */
 .shaka-video-container {
   position: relative;
   top: 0;
@@ -32,19 +21,22 @@
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .shaka-video-container .material-svg-icon {
   font-size: 24px;
 }
 
-.shaka-video-container:fullscreen {
+.shaka-video-container:fullscreen,
+.shaka-video-container:-webkit-full-screen {
   width: 100%;
   height: 100%;
   background-color: #000;
 }
 
-.shaka-video-container:fullscreen .shaka-text-container {
+.shaka-video-container:fullscreen .shaka-text-container,
+.shaka-video-container:-webkit-full-screen .shaka-text-container {
   font-size: 4.4vmin;
 }
 
@@ -53,10 +45,13 @@
   cursor: none !important;
 }
 
-/* Controls Layer */
+/* 2. Controls Layers */
 .shaka-controls-container {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -81,11 +76,13 @@
   display: none;
 }
 
-/* Canvases */
 .shaka-canvas-container,
 .shaka-vr-canvas-container {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -93,7 +90,6 @@
   pointer-events: none;
 }
 
-/* Bottom Bar & Scrim */
 .shaka-bottom-controls {
   width: 98%;
   padding: 0;
@@ -109,13 +105,35 @@
   bottom: 0;
   flex-shrink: 1;
   opacity: 0;
-  transition: var(--shaka-transition);
-  height: 80px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+  height: 70px;
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 100%);
   pointer-events: none;
 }
 
-/* Control Buttons Panel */
+/* 3. Controls Visibility State */
+.shaka-controls-container[casting="true"] .shaka-controls-button-panel,
+.shaka-controls-container[shown="true"] .shaka-controls-button-panel,
+.shaka-controls-container[casting="true"] .shaka-scrim-container,
+.shaka-controls-container[shown="true"] .shaka-scrim-container,
+.shaka-controls-container[casting="true"] .shaka-play-button,
+.shaka-controls-container[shown="true"] .shaka-play-button,
+.shaka-controls-container[casting="true"] .shaka-seek-bar-container,
+.shaka-controls-container[shown="true"] .shaka-seek-bar-container,
+.shaka-controls-container[casting="true"] .shaka-statistics-container,
+.shaka-controls-container[shown="true"] .shaka-statistics-container,
+.shaka-controls-container[casting="true"] .shaka-ad-statistics-container,
+.shaka-controls-container[shown="true"] .shaka-ad-statistics-container,
+.shaka-controls-container[casting="true"] .shaka-context-menu,
+.shaka-controls-container[shown="true"] .shaka-context-menu,
+.shaka-controls-container[casting="true"] .shaka-overflow-menu,
+.shaka-controls-container[casting="true"] .shaka-settings-menu,
+.shaka-controls-container[shown="true"] .shaka-overflow-menu,
+.shaka-controls-container[shown="true"] .shaka-settings-menu {
+  opacity: 1;
+}
+
+/* 4. Button Panel */
 .shaka-controls-button-panel {
   padding: 0;
   margin: 0;
@@ -126,39 +144,39 @@
   overflow: hidden;
   min-width: 48px;
   font-size: 12px;
+  font-weight: 400;
   user-select: none;
+  -webkit-user-select: none;
   opacity: 0;
-  transition: var(--shaka-transition);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1);
 }
 
 .shaka-controls-button-panel > * {
-  color: var(--shaka-text-color);
+  color: #fff;
   height: 48px;
   width: 48px;
-  line-height: 1;
+  line-height: .5;
   padding: 0 2px;
-  background: transparent;
+  background: 0 0;
   border: 0;
   cursor: pointer;
   opacity: 0.9;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.15s ease;
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .shaka-controls-button-panel > :hover {
   opacity: 1;
 }
 
-.shaka-controls-button-panel > :is(
-  .shaka-fast-forward-button,
-  .shaka-rewind-button,
-  .shaka-skip-next-button,
-  .shaka-skip-previous-button,
-  .shaka-small-play-button
-) .material-svg-icon {
+.shaka-controls-button-panel > .shaka-fast-forward-button .material-svg-icon,
+.shaka-controls-button-panel > .shaka-rewind-button .material-svg-icon,
+.shaka-controls-button-panel > .shaka-skip-next-button .material-svg-icon,
+.shaka-controls-button-panel > .shaka-skip-previous-button .material-svg-icon,
+.shaka-controls-button-panel > .shaka-small-play-button .material-svg-icon {
   font-size: 30px;
 }
 
@@ -167,42 +185,32 @@
   font-size: 24px;
 }
 
+.shaka-controls-button-panel > .shaka-overflow-menu-button {
+  position: relative;
+}
+
 .shaka-controls-button-panel .shaka-overflow-menu-only {
   display: none;
 }
 
-/* Auto Display on Hover/State */
-.shaka-controls-container[casting="true"] :is(
-  .shaka-controls-button-panel,
-  .shaka-statistics-container,
-  .shaka-ad-statistics-container,
-  .shaka-context-menu,
-  .shaka-scrim-container,
-  .shaka-play-button,
-  .shaka-seek-bar-container,
-  .shaka-overflow-menu,
-  .shaka-settings-menu
-),
-.shaka-controls-container[shown="true"] :is(
-  .shaka-controls-button-panel,
-  .shaka-statistics-container,
-  .shaka-ad-statistics-container,
-  .shaka-context-menu,
-  .shaka-scrim-container,
-  .shaka-play-button,
-  .shaka-seek-bar-container,
-  .shaka-overflow-menu,
-  .shaka-settings-menu
-) {
-  opacity: 1;
+.shaka-spacer {
+  cursor: default;
+  flex-shrink: 1;
+  flex-grow: 1;
+  margin: 0;
 }
 
-/* Big Center Play Button */
+/* 5. Center Big Play/Pause Button */
 .shaka-play-button-container {
-  inset: 0;
+  margin: 0;
   width: 100%;
   height: 100%;
+  flex-shrink: 1;
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -212,23 +220,25 @@
 
 .shaka-play-button {
   box-sizing: border-box;
-  width: 64px;
-  height: 64px;
+  padding: calc(15% / 2);
+  width: 0;
+  height: 0;
+  margin: 0;
   border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: rgba(0, 0, 0, 0.25) 0 0 20px 0;
   border: none;
-  background-size: 32px;
+  background-size: 50%;
   background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-position: center center;
+  background-color: rgba(255, 255, 255, 0.9);
   opacity: 0;
   cursor: pointer;
   pointer-events: auto;
-  transition: transform 0.2s ease, opacity 0.3s ease;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1), transform 0.15s ease;
 }
 
 .shaka-play-button:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .shaka-play-button[icon="play"] {
@@ -240,191 +250,397 @@
 }
 
 .shaka-play-button[icon="replay"] {
-  background-image: url("data:image/svg+xml,%3Csvg fill='%231f1f1f' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg fill='%231f1f1f' height='24px' viewBox='0 -960 960 960' width='24px' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M480-80q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0 117 81.5 198.5T480-160q117 0 198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62 62-56 58-160-160 160-160 56 58-62 62h6q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-440q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-80Z'/%3E%3C/svg%3E");
 }
 
-/* Time & Labels */
+/* 6. Current Time & Display */
 .shaka-current-time {
   font-size: 13px;
-  color: var(--shaka-text-color);
+  color: #fff;
   cursor: pointer;
-  padding: 0 8px;
-  user-select: none;
+  width: auto;
+  padding: 0 6px;
 }
 
 .shaka-current-time[disabled] {
+  background-color: transparent;
+  color: #fff;
   cursor: default;
 }
 
-/* Range Sliders & Seekbar */
+/* 7. Sliders & Seek-Bar Controls */
 .shaka-range-container {
   position: relative;
-  margin: 4px 6px;
+  top: 0;
+  left: 0;
+  margin: calc((12px - 4px) / 2) 6px;
   height: 4px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   box-sizing: content-box;
 }
 
 .shaka-volume-bar-container {
-  width: 80px;
-  transition: width 0.25s ease, opacity 0.25s ease;
+  width: 100px;
+  padding: 0;
+  transition: width 250ms cubic-bezier(0.4, 0, 0.6, 1), opacity 250ms ease;
+}
+
+.shaka-volume-bar-container:hover {
+  width: 100px !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 474px) {
+  .shaka-volume-bar-container {
+    width: 50px;
+  }
+  .shaka-volume-bar-container:hover {
+    width: 50px !important;
+  }
+  .shaka-mute-button:hover + .shaka-volume-bar-container-allow-hiding {
+    width: 50px;
+    opacity: 1;
+  }
+}
+
+.shaka-mute-button + .shaka-volume-bar-container-allow-hiding:not(:focus-within) {
+  width: 0;
+  opacity: 0;
+}
+
+@media (min-width: 475px) {
+  .shaka-mute-button:hover + .shaka-volume-bar-container-allow-hiding {
+    width: 100px;
+    opacity: 1;
+  }
 }
 
 .shaka-range-element {
+  -webkit-appearance: none;
   appearance: none;
-  background: transparent;
+  background: 0 0;
   cursor: pointer;
   position: absolute;
-  inset: 0;
+  top: calc((4px - 12px) / 2);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 12px;
-  top: -4px;
   z-index: 1;
 }
 
 .shaka-range-element::-webkit-slider-runnable-track {
   width: 100%;
+  cursor: pointer;
   height: 12px;
-  background: transparent;
+  background: 0 0;
+  color: transparent;
+  border: none;
 }
 
 .shaka-range-element::-webkit-slider-thumb {
+  -webkit-appearance: none;
   appearance: none;
   border: none;
-  border-radius: 50%;
+  border-radius: 12px;
   height: 12px;
   width: 12px;
-  background: #ffffff;
-  transition: transform 0.1s ease;
+  background: #fff;
 }
 
-.shaka-range-element:hover::-webkit-slider-thumb {
-  transform: scale(1.2);
+.shaka-range-element::-moz-range-track {
+  width: 100%;
+  cursor: pointer;
+  height: 12px;
+  background: 0 0;
+  color: transparent;
+  border: none;
 }
 
 .shaka-range-element::-moz-range-thumb {
   border: none;
-  border-radius: 50%;
+  border-radius: 12px;
   height: 12px;
   width: 12px;
-  background: #ffffff;
+  background: #fff;
 }
 
 .shaka-seek-bar-container {
   opacity: 0;
-  transition: var(--shaka-transition);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+  top: 5px;
   height: 5px;
-  border-radius: 2px;
+  margin-bottom: 0;
+  background-clip: padding-box !important;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
 }
 
 .shaka-seek-bar-container .shaka-seek-bar {
-  transition: opacity 0.25s ease;
-  opacity: 0.8;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.6, 1);
+  opacity: 0;
 }
 
 .shaka-seek-bar-container:hover .shaka-seek-bar {
   opacity: 1;
 }
 
-.shaka-spacer {
-  flex-grow: 1;
+.shaka-ad-markers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
-/* Menus & Popups */
-.shaka-context-menu,
+/* 8. Menus & Popups */
 .shaka-overflow-menu,
-.shaka-settings-menu {
+.shaka-settings-menu,
+.shaka-context-menu {
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-color: white rgba(0, 0, 0, 0.5);
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
   white-space: nowrap;
-  background: var(--shaka-bg-dark);
-  backdrop-filter: blur(8px);
+  background: rgba(28, 28, 28, 0.95);
   border-radius: 8px;
-  min-width: 200px;
-  padding: 6px 0;
+  min-width: 190px;
   opacity: 0;
-  transition: var(--shaka-transition);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1);
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   position: absolute;
   z-index: 3;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .shaka-overflow-menu,
 .shaka-settings-menu {
+  max-height: 250px;
+  padding: 5px 0;
   right: 15px;
-  bottom: 60px;
-  max-height: 280px;
+  bottom: 62px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-:is(.shaka-context-menu, .shaka-overflow-menu, .shaka-settings-menu) button {
-  font-size: 13px;
-  background: transparent;
-  color: var(--shaka-text-color);
+.shaka-overflow-menu.shaka-low-position,
+.shaka-settings-menu.shaka-low-position {
+  bottom: 48px;
+}
+
+.shaka-overflow-menu button,
+.shaka-settings-menu button,
+.shaka-context-menu button {
+  font-size: 14px;
+  background: 0 0;
+  color: #fff;
   border: none;
-  min-height: 36px;
-  padding: 8px 16px;
+  min-height: 32px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   cursor: pointer;
   transition: background 0.15s ease;
 }
 
-:is(.shaka-context-menu, .shaka-overflow-menu, .shaka-settings-menu) button:hover {
+.shaka-overflow-menu button:hover,
+.shaka-settings-menu button:hover,
+.shaka-context-menu button:hover,
+.shaka-keyboard-navigation .shaka-context-menu button:focus,
+.shaka-keyboard-navigation .shaka-overflow-menu button:focus,
+.shaka-keyboard-navigation .shaka-settings-menu button:focus {
   background: rgba(255, 255, 255, 0.15);
+}
+
+.shaka-overflow-menu button label,
+.shaka-settings-menu button label,
+.shaka-context-menu button label {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.shaka-overflow-menu .material-svg-icon,
+.shaka-settings-menu .material-svg-icon {
+  padding-left: 0;
+  padding-right: 10px;
 }
 
 .shaka-overflow-menu .material-svg-icon.shaka-chosen-item,
 .shaka-settings-menu .material-svg-icon.shaka-chosen-item {
   order: -1;
+  line-height: 17px;
   font-size: 18px;
-  margin-right: 8px;
+}
+
+.shaka-overflow-button-label {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.shaka-overflow-button-label-inline {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: calc(100% - 34px);
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 0 24 24' width='24px' fill='%23eeeeee'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  background-size: 24px 24px;
+}
+
+.shaka-simple-overflow-button-label-inline {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: calc(100% - 50px);
+}
+
+.shaka-current-selection-span {
+  font-size: 12px;
+  padding-left: 10px;
+  color: #ccc;
 }
 
 .shaka-current-auto-quality {
-  margin-left: 6px;
+  margin-left: 5px;
   font-size: 11px;
-  color: #bbb;
+  color: #ccc;
 }
 
 .shaka-current-quality-mark,
 .shaka-quality-mark {
-  color: var(--accent-color, #ff4444);
+  color: #ff3b30;
+  margin-left: 2px !important;
   font-size: 10px;
-  margin-left: 4px;
+  height: 17px;
 }
 
-/* Tooltips */
-.shaka-tooltips-on > :is(.shaka-tooltip, .shaka-tooltip-status):is(:hover, :focus-visible)::after {
-  content: attr(aria-label);
-  font-family: inherit;
-  font-size: 12px;
-  line-height: 1.4;
-  white-space: nowrap;
-  background: rgba(0, 0, 0, 0.85);
+.shaka-quality-mark {
+  line-height: 6px;
+}
+
+.shaka-overflow-playback-rate-mark,
+.shaka-overflow-quality-mark {
+  background: #ff3b30;
   color: #fff;
-  border-radius: 4px;
-  padding: 4px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 10px;
+  padding: 1px 3px;
   position: absolute;
-  bottom: 58px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 4px;
+  top: 10px;
+}
+
+.shaka-settings-menu span {
+  margin-left: 28px;
+}
+
+.shaka-settings-menu span.shaka-chosen-item {
+  margin-left: 0;
+}
+
+.shaka-settings-menu .shaka-chapter {
+  margin-left: 10px;
+}
+
+.shaka-back-to-overflow-button {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.shaka-back-to-overflow-button span {
+  margin-left: 0;
+}
+
+.shaka-back-to-overflow-button .material-svg-icon {
+  padding-right: 10px;
+  font-size: 18px !important;
+}
+
+/* 9. Statistics Windows */
+.shaka-statistics-container,
+.shaka-ad-statistics-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: white rgba(0, 0, 0, 0.5);
+  scrollbar-width: thin;
+  color: #fff;
+  background-color: rgba(35, 35, 35, 0.95);
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 2;
+  top: 15px;
+  max-height: calc(100% - 115px);
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.shaka-statistics-container {
+  min-width: 280px;
+  left: 15px;
+}
+
+.shaka-ad-statistics-container {
+  min-width: 150px;
+  right: 15px;
+}
+
+.shaka-statistics-container div,
+.shaka-ad-statistics-container div {
+  display: flex;
+  justify-content: space-between;
+  margin: 3px 0;
+}
+
+.shaka-statistics-container span,
+.shaka-ad-statistics-container span {
+  color: #969696;
+}
+
+/* 10. Subtitles & Captions */
+.shaka-text-container {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  width: 100%;
+  min-width: 48px;
+  transition: bottom 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+  transition-delay: 0.5s;
+  font-size: 20px;
+  line-height: 1.4;
+  color: #fff;
 }
 
-.shaka-tooltips-on > .shaka-tooltip-status:is(:hover, :focus-visible)::after {
-  content: attr(aria-label) " (" attr(shaka-status) ")";
+.shaka-text-container span.shaka-text-wrapper {
+  display: inline;
+  background: 0 0;
 }
 
-/* Spinner */
+.shaka-controls-container[shown="true"] ~ .shaka-text-container {
+  transition-delay: 0s;
+}
+
+/* 11. Spinner & Double-Tap Zones */
 .shaka-spinner-container {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -435,7 +651,6 @@
   display: none;
 }
 
-/* Double-Tap / Hidden Fast Forward / Rewind zones */
 .shaka-hidden-fast-forward-container,
 .shaka-hidden-rewind-container {
   height: 100%;
@@ -446,14 +661,205 @@
 }
 
 .shaka-hidden-fast-forward-container {
-  right: 0;
+  left: 60%;
 }
 
 .shaka-hidden-rewind-container {
   left: 0;
 }
 
-/* Accessibility Focus States */
-.shaka-controls-container:not(.shaka-keyboard-navigation) :is(button, input):focus {
+.shaka-fast-forward-container,
+.shaka-rewind-container {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: default;
+  font-size: 20px;
+  opacity: 0;
+  user-select: none;
+}
+
+.shaka-fast-forward-container {
+  border-radius: 40% 0 0 40%;
+}
+
+.shaka-rewind-container {
+  border-radius: 0 40% 40% 0;
+}
+
+.shaka-forward-rewind-container-icon {
+  font-size: 32px;
+}
+
+/* 12. Ads Controls */
+.shaka-controls-container[ad-active="true"] {
+  pointer-events: none;
+}
+
+.shaka-controls-container[ad-active="true"] .shaka-bottom-controls {
+  pointer-events: auto;
+}
+
+.shaka-client-side-ad-container,
+.shaka-server-side-ad-container {
+  position: absolute;
+  inset: 0;
+}
+
+.shaka-video-container[shaka-controls="true"] .shaka-client-side-ad-container iframe,
+.shaka-video-container[shaka-controls="true"] .shaka-server-side-ad-container iframe {
+  height: 90%;
+}
+
+.shaka-ad-controls {
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  padding-bottom: 1%;
+}
+
+.shaka-video-container:not([shaka-controls="true"]) .shaka-ad-controls {
+  display: none;
+}
+
+.shaka-ad-controls button,
+.shaka-ad-controls div {
+  color: #fff;
+}
+
+.shaka-ad-info {
+  font-size: 14px;
+  color: #fff;
+  width: auto;
+  padding: 0 5px;
+}
+
+.shaka-skip-ad-container {
+  position: relative;
+  right: calc((100% - 98%) / 2 * -1);
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.shaka-skip-ad-button {
+  padding: 5px 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  cursor: pointer;
+}
+
+.shaka-skip-ad-button:disabled {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.shaka-skip-ad-counter {
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+/* 13. Tooltips */
+.shaka-tooltips-on {
+  overflow: visible;
+}
+
+.shaka-tooltips-on > .shaka-tooltip,
+.shaka-tooltips-on > .shaka-tooltip-status {
+  position: relative;
+}
+
+.shaka-tooltips-on > .shaka-tooltip-status:active:after,
+.shaka-tooltips-on > .shaka-tooltip-status:focus-visible:after,
+.shaka-tooltips-on > .shaka-tooltip-status:hover:after,
+.shaka-tooltips-on > .shaka-tooltip:active:after,
+.shaka-tooltips-on > .shaka-tooltip:focus-visible:after,
+.shaka-tooltips-on > .shaka-tooltip:hover:after {
+  content: attr(aria-label);
+  line-height: 20px;
+  white-space: nowrap;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border-radius: 4px;
+  padding: 3px 8px;
+  position: absolute;
+  bottom: 60px;
+  left: calc(48px / 2);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.shaka-tooltips-on.shaka-tooltips-low-position > .shaka-tooltip:active:after,
+.shaka-tooltips-on.shaka-tooltips-low-position > .shaka-tooltip:focus-visible:after,
+.shaka-tooltips-on.shaka-tooltips-low-position > .shaka-tooltip:hover:after {
+  bottom: 48px;
+}
+
+.shaka-tooltips-on > .shaka-tooltip-status:active:after,
+.shaka-tooltips-on > .shaka-tooltip-status:focus-visible:after,
+.shaka-tooltips-on > .shaka-tooltip-status:hover:after {
+  content: attr(aria-label) " (" attr(shaka-status) ")";
+}
+
+/* 14. Thumbnails & Timestamps */
+#shaka-player-ui-thumbnail-container {
+  background-color: #000;
+  border: 1px solid #000;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.5);
+  min-width: 150px;
+  overflow: hidden;
+  position: absolute;
+  visibility: hidden;
+  width: 15%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#shaka-player-ui-thumbnail-container #shaka-player-ui-thumbnail-image {
+  position: absolute;
+}
+
+#shaka-player-ui-thumbnail-container #shaka-player-ui-thumbnail-time-container {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+}
+
+#shaka-player-ui-thumbnail-container #shaka-player-ui-thumbnail-time-container #shaka-player-ui-thumbnail-time {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 13px;
+  padding: 0 6px;
+}
+
+#shaka-player-ui-time-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  color: #fff;
+  display: flex;
+  font-size: 13px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 1px 5px;
+  position: absolute;
+  visibility: hidden;
+  z-index: 1;
+}
+
+/* 15. Outline Resets */
+.shaka-controls-container:not(.shaka-keyboard-navigation) button:focus,
+.shaka-controls-container:not(.shaka-keyboard-navigation) input:focus {
   outline: 0;
 }
