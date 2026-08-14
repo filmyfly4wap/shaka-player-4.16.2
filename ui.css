@@ -1,0 +1,642 @@
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      overflow: hidden;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none
+    }
+
+    #channel-list {
+      position: fixed;
+      inset: 0;
+      background: #0a0a0a;
+      z-index: 9998;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom))
+    }
+
+    #channel-list h1 {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #141414;
+      text-align: center
+    }
+
+    #ch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px
+    }
+
+    .ch-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 22px 16px;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2)
+    }
+
+    .ch-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: #2962ff;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.15)
+    }
+    
+    .ch-card:active {
+      transform: scale(.97);
+      background: rgba(255, 255, 255, 0.1)
+    }
+
+    .ch-card:focus-visible {
+      outline: 2px solid #2962ff;
+      outline-offset: 3px
+    }
+
+    .ch-card span {
+      color: #e0e0e0;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.4
+    }
+
+    #pc {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      will-change: transform
+    }
+
+    video.mode-fill {
+      object-fit: fill
+    }
+
+    video.mode-cover {
+      object-fit: cover
+    }
+
+    #status {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(12px, env(safe-area-inset-right));
+      z-index: 9997;
+      padding: 5px 13px;
+      background: rgba(8, 8, 8, .9);
+      border: 1px solid rgba(255, 255, 255, .05);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .02em;
+      border-radius: 20px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .3s;
+      max-width: 260px;
+      text-align: right;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px)
+    }
+
+    #status.show {
+      opacity: 1
+    }
+
+    #status.ok {
+      color: #2962ff
+    }
+
+    #status.warn {
+      color: #2962ff
+    }
+
+    #status.err {
+      color: #2962ff
+    }
+
+    .sp-btn {
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      padding: 0 8px !important;
+      opacity: .8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      height: 100%;
+      min-width: 36px;
+      transition: opacity .15s, color .15s;
+      color: #fff !important;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    .sp-btn:hover {
+      opacity: 1
+    }
+
+    .sp-btn:active {
+      opacity: 1;
+      transform: scale(.92)
+    }
+
+    .sp-btn:focus-visible {
+      outline: 2px solid #2962ff;
+      outline-offset: 2px;
+      border-radius: 6px
+    }
+
+    .sp-btn svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      pointer-events: none;
+      flex-shrink: 0
+    }
+
+    .sp-btn.active {
+      opacity: 1;
+      color: #2962ff !important
+    }
+
+    .shaka-controls-container button {
+      color: #fff !important
+    }
+
+    .shaka-video-container {
+      background-color: #000 !important
+    }
+
+    @media (max-width:400px) {
+      .sp-btn {
+        padding: 0 6px !important;
+        gap: 3px
+      }
+    }
+
+    /* Dim Screen Overlay */
+    #brightness-overlay {
+      position: absolute;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* Vertical Gestures HUD (Khada Bar) */
+    .vertical-hud {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 10000;
+      pointer-events: none;
+    }
+
+    #hud-brightness {
+      left: 10%;
+    }
+
+    #hud-volume {
+      right: 10%;
+    }
+
+    .vertical-hud i {
+      font-size: 15px;
+      color: #ffffff;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+
+    /* Vertical Progress Bar Container */
+    .hud-vertical-bar {
+      width: 4px;
+      height: 130px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .hud-vertical-fill {
+      width: 100%;
+      height: 0%;
+      background: #ffffff;
+      border-radius: 4px;
+      transition: height 0.05s ease-out;
+    }
+
+    /* YouTube Style Double Tap Seek Overlay */
+    .youtube-seek-hud {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 40%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      pointer-events: none;
+      color: #ffffff;
+      gap: 6px;
+    }
+
+    #seek-left {
+      left: 0;
+      border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+    }
+
+    #seek-right {
+      right: 0;
+      border-radius: 100% 0 0 100% / 50% 0 0 50%;
+    }
+
+    .yt-arrows {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 16px;
+    }
+
+    /* Animated Triple Arrows */
+    .yt-arrows i {
+      animation: ytArrowFade 0.8s infinite ease-in-out;
+    }
+
+    .yt-arrows i:nth-child(1) { animation-delay: 0s; }
+    .yt-arrows i:nth-child(2) { animation-delay: 0.15s; }
+    .yt-arrows i:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes ytArrowFade {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    .yt-seek-text {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    /* Animated Entry Lock Container (Zoom In / Bounce Animation on Tap) */
+    #floating-lock-container {
+      position: absolute;
+      left: max(16px, env(safe-area-inset-left));
+      top: max(16px, env(safe-area-inset-top));
+      z-index: 10001;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.5) translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Tap Par Show Animation */
+    #floating-lock-container.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Side Text Label */
+    .lock-side-label {
+      border: 1px solid rgba(41, 98, 255, 0.6);
+      color: #ffffff;
+      font-size: clamp(12px, 1.8vw, 14px);
+      font-weight: 600;
+      padding: clamp(6px, 1vw, 9px) clamp(12px, 1.8vw, 16px);
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* Animated Floating Lock Button */
+    #floating-lock-btn {
+      width: clamp(42px, 5.5vw, 54px);
+      height: clamp(42px, 5.5vw, 54px);
+      background: rgba(15, 23, 42, 0.88);
+      border: 1.5px solid rgba(41, 98, 255, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+      box-shadow: 0 0 12px rgba(41, 98, 255, 0.4);
+      animation: lockBackgroundPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes lockBackgroundPulse {
+      0%, 100% {
+        background-color: rgba(15, 23, 42, 0.88);
+        box-shadow: 0 0 8px rgba(41, 98, 255, 0.3);
+      }
+      50% {
+        background-color: rgba(41, 98, 255, 0.35);
+        box-shadow: 0 0 20px rgba(41, 98, 255, 0.8);
+      }
+    }
+
+    #floating-lock-btn:active {
+      transform: scale(0.9);
+    }
+
+    #floating-lock-btn svg {
+      width: clamp(20px, 2.5vw, 24px);
+      height: clamp(20px, 2.5vw, 24px);
+      fill: #fff;
+      filter: drop-shadow(0 0 4px rgba(41, 98, 255, 0.8));
+    }
+
+    /* OTT / JioCinema Style Tabbed Settings Modal */
+    .ott-settings-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10008;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .ott-settings-modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .ott-settings-box {
+      width: min(90%, 540px);
+      max-height: 85vh;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    /* Fixed Top Header Container for Tabs & Close Button */
+    .ott-settings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      position: relative;
+      padding-right: 48px; /* Close button space */
+    }
+
+    .ott-settings-nav {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 0 10px;
+      width: 100%;
+    }
+
+    .ott-settings-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ott-nav-tab {
+      padding: 16px 18px;
+      color: #94a3b8;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .ott-nav-tab:hover {
+      color: #f8fafc;
+    }
+
+    .ott-nav-tab.active {
+      color: #ffffff;
+      border-bottom-color: #2962ff;
+    }
+
+    /* Fixed Position Close Button */
+    .ott-settings-close {
+      background: rgba(255, 255, 255, 0.1);
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+
+    .ott-settings-close:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .ott-settings-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 320px;
+    }
+
+    .ott-settings-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .ott-settings-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    .ott-section-title {
+      font-size: 11px;
+      color: #2962ff;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      margin-top: 6px;
+      margin-bottom: 2px;
+    }
+
+    .ott-option-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ott-option-row:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(41, 98, 255, 0.3);
+    }
+
+    .ott-option-row.active {
+      background: rgba(41, 98, 255, 0.15);
+      border-color: #2962ff;
+    }
+
+    .ott-option-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .ott-option-title {
+      color: #f8fafc;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .ott-option-sub {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+
+    .ott-option-check {
+      color: #2962ff;
+      font-size: 16px;
+      visibility: hidden;
+    }
+
+    .ott-option-row.active .ott-option-check {
+      visibility: visible;
+    }
+
+    /* Hide Shaka Default Quality Button */
+    .shaka-quality-button {
+      display: none !important;
+    }
+
+    /* Orientation Media Query Fixes */
+    @media (orientation: portrait) {
+      #floating-lock-container {
+        left: max(12px, env(safe-area-inset-left));
+        top: max(12px, env(safe-area-inset-top));
+      }
+      .lock-side-label {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+      #floating-lock-btn {
+        width: 44px;
+        height: 44px;
+      }
+      #floating-lock-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .controls-locked .shaka-controls-container {
+      display: none !important;
+    }
+
+
+    .custom-watermark {
+      position: absolute;
+      z-index: 40;
+      pointer-events: none;
+      top: 65%;
+      left: 11%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.12);
+    }
+    
+    .custom-watermark img {
+      height: 52px;
+      width: 52px;
+      opacity: 80%;
+    }
+    
+    @media (max-width: 700px) {
+      .custom-watermark {
+        font-size: 9px;
+        top: 58%;
+        left: 4%;
+      }
+      
+      .custom-watermark img {
+        height: 45px;
+        width: 45px;
+        opacity: 80%;
+      }
+    }
+
+  
