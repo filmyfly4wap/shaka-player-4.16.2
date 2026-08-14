@@ -1,0 +1,459 @@
+/* ==========================================================================
+   Shaka Player Custom UI Theme / Optimized CSS
+   ========================================================================== */
+
+:root {
+  --shaka-bg-dark: rgba(28, 28, 28, 0.9);
+  --shaka-bg-translucent: rgba(0, 0, 0, 0.5);
+  --shaka-text-color: #ffffff;
+  --shaka-accent-color: #e50914;
+  --shaka-transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Utility */
+.shaka-hidden {
+  display: none !important;
+}
+
+.material-svg-icon {
+  display: inline-block;
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+}
+
+/* Video Container */
+.shaka-video-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+.shaka-video-container .material-svg-icon {
+  font-size: 24px;
+}
+
+.shaka-video-container:fullscreen {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+.shaka-video-container:fullscreen .shaka-text-container {
+  font-size: 4.4vmin;
+}
+
+.shaka-video-container.no-cursor,
+.shaka-video-container.no-cursor * {
+  cursor: none !important;
+}
+
+/* Controls Layer */
+.shaka-controls-container {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 1;
+}
+
+.shaka-video-container:not([shaka-controls="true"]) .shaka-controls-container {
+  display: none;
+}
+
+.shaka-controls-container * {
+  flex-shrink: 0;
+}
+
+.shaka-controls-container[casting="true"] .shaka-fullscreen-button {
+  display: none;
+}
+
+/* Canvases */
+.shaka-canvas-container,
+.shaka-vr-canvas-container {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Bottom Bar & Scrim */
+.shaka-bottom-controls {
+  width: 98%;
+  padding: 0;
+  z-index: 1;
+}
+
+.shaka-scrim-container {
+  margin: 0;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex-shrink: 1;
+  opacity: 0;
+  transition: var(--shaka-transition);
+  height: 80px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Control Buttons Panel */
+.shaka-controls-button-panel {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+  min-width: 48px;
+  font-size: 12px;
+  user-select: none;
+  opacity: 0;
+  transition: var(--shaka-transition);
+}
+
+.shaka-controls-button-panel > * {
+  color: var(--shaka-text-color);
+  height: 48px;
+  width: 48px;
+  line-height: 1;
+  padding: 0 2px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shaka-controls-button-panel > :hover {
+  opacity: 1;
+}
+
+.shaka-controls-button-panel > :is(
+  .shaka-fast-forward-button,
+  .shaka-rewind-button,
+  .shaka-skip-next-button,
+  .shaka-skip-previous-button,
+  .shaka-small-play-button
+) .material-svg-icon {
+  font-size: 30px;
+}
+
+.shaka-controls-button-panel > .shaka-fullscreen-button .material-svg-icon,
+.shaka-controls-button-panel > .shaka-overflow-menu-button .material-svg-icon {
+  font-size: 24px;
+}
+
+.shaka-controls-button-panel .shaka-overflow-menu-only {
+  display: none;
+}
+
+/* Auto Display on Hover/State */
+.shaka-controls-container[casting="true"] :is(
+  .shaka-controls-button-panel,
+  .shaka-statistics-container,
+  .shaka-ad-statistics-container,
+  .shaka-context-menu,
+  .shaka-scrim-container,
+  .shaka-play-button,
+  .shaka-seek-bar-container,
+  .shaka-overflow-menu,
+  .shaka-settings-menu
+),
+.shaka-controls-container[shown="true"] :is(
+  .shaka-controls-button-panel,
+  .shaka-statistics-container,
+  .shaka-ad-statistics-container,
+  .shaka-context-menu,
+  .shaka-scrim-container,
+  .shaka-play-button,
+  .shaka-seek-bar-container,
+  .shaka-overflow-menu,
+  .shaka-settings-menu
+) {
+  opacity: 1;
+}
+
+/* Big Center Play Button */
+.shaka-play-button-container {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shaka-play-button {
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border: none;
+  background-size: 32px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.shaka-play-button:hover {
+  transform: scale(1.1);
+}
+
+.shaka-play-button[icon="play"] {
+  background-image: url("data:image/svg+xml,%3Csvg fill='%23000000' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+}
+
+.shaka-play-button[icon="pause"] {
+  background-image: url("data:image/svg+xml,%3Csvg fill='%23000000' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E");
+}
+
+.shaka-play-button[icon="replay"] {
+  background-image: url("data:image/svg+xml,%3Csvg fill='%231f1f1f' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z'/%3E%3C/svg%3E");
+}
+
+/* Time & Labels */
+.shaka-current-time {
+  font-size: 13px;
+  color: var(--shaka-text-color);
+  cursor: pointer;
+  padding: 0 8px;
+  user-select: none;
+}
+
+.shaka-current-time[disabled] {
+  cursor: default;
+}
+
+/* Range Sliders & Seekbar */
+.shaka-range-container {
+  position: relative;
+  margin: 4px 6px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  box-sizing: content-box;
+}
+
+.shaka-volume-bar-container {
+  width: 80px;
+  transition: width 0.25s ease, opacity 0.25s ease;
+}
+
+.shaka-range-element {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 12px;
+  top: -4px;
+  z-index: 1;
+}
+
+.shaka-range-element::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  background: transparent;
+}
+
+.shaka-range-element::-webkit-slider-thumb {
+  appearance: none;
+  border: none;
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  background: #ffffff;
+  transition: transform 0.1s ease;
+}
+
+.shaka-range-element:hover::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.shaka-range-element::-moz-range-thumb {
+  border: none;
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  background: #ffffff;
+}
+
+.shaka-seek-bar-container {
+  opacity: 0;
+  transition: var(--shaka-transition);
+  height: 5px;
+  border-radius: 2px;
+}
+
+.shaka-seek-bar-container .shaka-seek-bar {
+  transition: opacity 0.25s ease;
+  opacity: 0.8;
+}
+
+.shaka-seek-bar-container:hover .shaka-seek-bar {
+  opacity: 1;
+}
+
+.shaka-spacer {
+  flex-grow: 1;
+}
+
+/* Menus & Popups */
+.shaka-context-menu,
+.shaka-overflow-menu,
+.shaka-settings-menu {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+  white-space: nowrap;
+  background: var(--shaka-bg-dark);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  min-width: 200px;
+  padding: 6px 0;
+  opacity: 0;
+  transition: var(--shaka-transition);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 3;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.shaka-overflow-menu,
+.shaka-settings-menu {
+  right: 15px;
+  bottom: 60px;
+  max-height: 280px;
+}
+
+:is(.shaka-context-menu, .shaka-overflow-menu, .shaka-settings-menu) button {
+  font-size: 13px;
+  background: transparent;
+  color: var(--shaka-text-color);
+  border: none;
+  min-height: 36px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+:is(.shaka-context-menu, .shaka-overflow-menu, .shaka-settings-menu) button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.shaka-overflow-menu .material-svg-icon.shaka-chosen-item,
+.shaka-settings-menu .material-svg-icon.shaka-chosen-item {
+  order: -1;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.shaka-current-auto-quality {
+  margin-left: 6px;
+  font-size: 11px;
+  color: #bbb;
+}
+
+.shaka-current-quality-mark,
+.shaka-quality-mark {
+  color: var(--accent-color, #ff4444);
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+/* Tooltips */
+.shaka-tooltips-on > :is(.shaka-tooltip, .shaka-tooltip-status):is(:hover, :focus-visible)::after {
+  content: attr(aria-label);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 8px;
+  position: absolute;
+  bottom: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.shaka-tooltips-on > .shaka-tooltip-status:is(:hover, :focus-visible)::after {
+  content: attr(aria-label) " (" attr(shaka-status) ")";
+}
+
+/* Spinner */
+.shaka-spinner-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.shaka-video-container:not([shaka-controls="true"]) .shaka-spinner-container {
+  display: none;
+}
+
+/* Double-Tap / Hidden Fast Forward / Rewind zones */
+.shaka-hidden-fast-forward-container,
+.shaka-hidden-rewind-container {
+  height: 100%;
+  width: 40%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.shaka-hidden-fast-forward-container {
+  right: 0;
+}
+
+.shaka-hidden-rewind-container {
+  left: 0;
+}
+
+/* Accessibility Focus States */
+.shaka-controls-container:not(.shaka-keyboard-navigation) :is(button, input):focus {
+  outline: 0;
+}
