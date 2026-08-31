@@ -389,29 +389,6 @@
   display: none
 }
 
-.shaka-hidden-fast-forward-container,
-.shaka-hidden-rewind-container {
-  height: 100%;
-  width: 40%;
-  flex-shrink: 1
-}
-
-.shaka-hidden-fast-forward-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  left: 60%
-}
-
-.shaka-hidden-rewind-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0
-}
 
 .shaka-video-container.no-cursor {
   cursor: none !important
@@ -453,45 +430,6 @@
 .shaka-controls-container:not(.shaka-keyboard-navigation) button:focus,
 .shaka-controls-container:not(.shaka-keyboard-navigation) input:focus {
   outline: 0
-}
-
-.shaka-fast-forward-container,
-.shaka-rewind-container {
-  height: 100%;
-  width: 100%;
-  flex-shrink: 1;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  border: none;
-  color: #fff;
-  background-color: rgba(0, 0, 0, .5);
-  cursor: default;
-  font-size: 20px;
-  opacity: 0;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none
-}
-
-.shaka-fast-forward-container {
-  border-radius: 40% 0 0 40%
-}
-
-.shaka-rewind-container {
-  border-radius: 0 40% 40% 0
-}
-
-.shaka-forward-rewind-container-icon {
-  font-size: 32px
 }
 
 .shaka-range-container {
