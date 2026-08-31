@@ -421,73 +421,42 @@
   cursor: none !important
 }
 
-/* ============================================================
-   FIX: Balanced & Responsive Center Play/Pause Button (UI/UX)
-   ============================================================ */
 .shaka-play-button {
-  box-sizing: border-box !important;
-  /* Fixed responsive sizing clamp: Mobile me 60px aur bade screens par 72px */
-  width: clamp(58px, 9vw, 74px) !important;
-  height: clamp(58px, 9vw, 74px) !important;
-  min-width: unset !important;
-  min-height: unset !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 50% !important;
-
-  /* Premium Frosted Glass Effect */
-  background-color: rgba(255, 255, 255, 0.92) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 15px rgba(41, 98, 255, 0.25) !important;
-
-  /* SVG Icon Placement */
-  background-size: 40% !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
+  colour:
+  box-sizing: border-box;
+  padding: calc(13% / 2);
+  width: 0;
+  height: 0;
+  margin: 0;
   
-  cursor: pointer !important;
+  box-shadow: rgba(0, 0, 0, .1) 0 0 20px 0;
+  border: none;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color:#fff;
+  background-color: rgba(255, 255, 255, .9);
   opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              background-color 0.2s ease !important;
-  -webkit-tap-highlight-color: transparent !important;
+  transition: opacity cubic-bezier(.4, 0, .6, 1) .6s
 }
 
-/* Jab controls screen par active ho */
+
+
 .shaka-controls-container[casting=true] .shaka-play-button,
 .shaka-controls-container[shown=true] .shaka-play-button {
-  opacity: 1 !important;
-  transform: scale(1) !important;
+  opacity: 1
 }
 
-/* Hover aur Tap Animations */
-.shaka-play-button:hover {
-  background-color: #ffffff !important;
-  transform: scale(1.08) !important;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 22px rgba(41, 98, 255, 0.45) !important;
-}
-
-.shaka-play-button:active {
-  transform: scale(0.92) !important;
-}
-
-/* Play Icon Visual Balance (Triangle shape center offset adjustment) */
 .shaka-play-button[icon=play] {
-  background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%230a0a0a%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M8%205v14l11-7z%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E") !important;
-  background-position: calc(50% + 2px) center !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%23000000%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M8%205v14l11-7z%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E")
 }
 
 .shaka-play-button[icon=pause] {
-  background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%230a0a0a%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M6%2019h4V5H6v14zm8-14v14h4V5h-4z%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E") !important;
-  background-position: center center !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%23000000%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M6%2019h4V5H6v14zm8-14v14h4V5h-4z%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E")
 }
 
 .shaka-play-button[icon=replay] {
-  background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%230a0a0a%22%20height%3D%2224px%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2224px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cpath%20d%3D%22M480-80q-75%200-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0%20117%2081.5%20198.5T480-160q117%200%20198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62%2062-56%2058-160-160%20160-160%2056%2058-62%2062h6q75%200%20140.5%2028.5t114%2077q48.5%2048.5%2077%20114T840-440q0%2075-28.5%20140.5t-77%20114q-48.5%2048.5-114%2077T480-80Z%22%2F%3E%0A%3C%2Fsvg%3E") !important;
-  background-position: center center !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%231f1f1f%22%20height%3D%2224px%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2224px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cpath%20d%3D%22M480-80q-75%200-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0%20117%2081.5%20198.5T480-160q117%200%20198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62%2062-56%2058-160-160%20160-160%2056%2058-62%2062h6q75%200%20140.5%2028.5t114%2077q48.5%2048.5%2077%20114T840-440q0%2075-28.5%20140.5t-77%20114q-48.5%2048.5-114%2077T480-80Z%22%2F%3E%0A%3C%2Fsvg%3E")
 }
 
 
