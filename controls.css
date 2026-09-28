@@ -1,5 +1,4 @@
-
-  /*! @license
+/*! @license
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
@@ -482,6 +481,20 @@ textarea {
   opacity: 1
 }
 
+.shaka-controls-button-panel>.shaka-fast-forward-button .shaka-ui-icon,
+.shaka-controls-button-panel>.shaka-play-button .shaka-ui-icon,
+.shaka-controls-button-panel>.shaka-rewind-button .shaka-ui-icon,
+.shaka-controls-button-panel>.shaka-skip-next-button .shaka-ui-icon,
+.shaka-controls-button-panel>.shaka-skip-previous-button .shaka-ui-icon,
+.shaka-controls-top-button-panel>.shaka-fast-forward-button .shaka-ui-icon,
+.shaka-controls-top-button-panel>.shaka-play-button .shaka-ui-icon,
+.shaka-controls-top-button-panel>.shaka-rewind-button .shaka-ui-icon,
+.shaka-controls-top-button-panel>.shaka-skip-next-button .shaka-ui-icon,
+.shaka-controls-top-button-panel>.shaka-skip-previous-button .shaka-ui-icon {
+  font-size: 32px;
+  font-size: var(--shaka-icon-size-lg)
+}
+
 .shaka-controls-button-panel>.shaka-fullscreen-button,
 .shaka-controls-button-panel>.shaka-overflow-menu-button,
 .shaka-controls-top-button-panel>.shaka-fullscreen-button,
@@ -727,13 +740,30 @@ textarea {
   display: none
 }
 
-/* Remove Fast-Forward & Rewind touch hitboxes */
 .shaka-hidden-fast-forward-container,
-.shaka-hidden-rewind-container,
-.shaka-fast-forward-container,
-.shaka-rewind-container {
-  display: none !important;
-  pointer-events: none !important;
+.shaka-hidden-rewind-container {
+  height: 100%;
+  width: 40%;
+  -webkit-flex-shrink: 1;
+  flex-shrink: 1;
+  z-index: 1
+}
+
+.shaka-hidden-fast-forward-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 60%
+}
+
+.shaka-hidden-rewind-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0
 }
 
 .shaka-video-container.no-cursor,
@@ -788,6 +818,51 @@ textarea {
 .shaka-controls-container:not(.shaka-keyboard-navigation) button:focus,
 .shaka-controls-container:not(.shaka-keyboard-navigation) input:focus {
   outline: none
+}
+
+.shaka-fast-forward-container,
+.shaka-rewind-container {
+  height: 100%;
+  width: 100%;
+  -webkit-flex-shrink: 1;
+  flex-shrink: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+  margin: 0;
+  border: none;
+  color: #fff;
+  color: var(--shaka-font-color);
+  background-color: rgba(0, 0, 0, .5);
+  background-color: var(--shaka-bg);
+  cursor: default;
+  font-size: 20px;
+  opacity: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none
+}
+
+.shaka-fast-forward-container {
+  border-radius: 40% 0 0 40%
+}
+
+.shaka-rewind-container {
+  border-radius: 0 40% 40% 0
+}
+
+.shaka-forward-rewind-container-icon {
+  font-size: 32px
 }
 
 .shaka-range-container {
