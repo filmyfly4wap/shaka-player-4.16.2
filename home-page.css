@@ -1,4 +1,4 @@
-
+  <style>
     *, *::before, *::after {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent !important;
@@ -1408,3 +1408,5 @@
       .custom-watermark img { height: 38px; width: 38px; }
       .youtube-seek-hud { width: 42%; }
     }
+  </style>
+  
